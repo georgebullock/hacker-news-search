@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./App.css";
 
 const App = () => {
@@ -67,16 +67,22 @@ const InputWithLabel = ({
   handleSearch,
   children,
 }) => {
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    if (isFocused) inputRef.current.focus();
+  }, [isFocused]);
+
   return (
     <>
       <label htmlFor={id}>{children}</label>
       <input
-        autoFocus={isFocused}
         name={name}
         type={type}
         id={id}
         value={value}
         onChange={handleSearch}
+        ref={inputRef}
       />
     </>
   );
