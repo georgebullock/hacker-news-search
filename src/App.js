@@ -22,7 +22,7 @@ const App = () => {
   ];
 
   const useSemiPersistentState = (key) => {
-    let [value, setValue] = useState(localStorage.getItem(key) || "Top Rated");
+    let [value, setValue] = useState(localStorage.getItem(key) || "");
 
     useEffect(() => localStorage.setItem(key, value), [key, value]);
 
@@ -42,27 +42,40 @@ const App = () => {
   return (
     <div className="App">
       <h1>Hacker Stories</h1>
-      <Search handleSearch={handleSearch} searchTerm={searchTerm} />
+      <InputWithLabel
+        label="Search:"
+        name="search"
+        id="search"
+        handleSearch={handleSearch}
+        searchTerm={searchTerm}
+      >
+        <strong>Search:</strong>
+      </InputWithLabel>
       <hr />
       <List list={filterStories} />
     </div>
   );
 };
 
-const Search = ({ handleSearch, searchTerm }) => {
+const InputWithLabel = ({
+  label,
+  name,
+  id,
+  type = "text",
+  children,
+  handleSearch,
+  searchTerm,
+}) => {
   return (
     <>
-      <label htmlFor="search">Search: </label>
+      <label htmlFor={id}>{children}</label>
       <input
-        name="search"
-        id="search"
-        type="text"
+        name={name}
+        id={id}
+        type={type}
         value={searchTerm}
         onChange={handleSearch}
       />
-      <p>
-        Searching for: <strong>{searchTerm}</strong>
-      </p>
     </>
   );
 };
