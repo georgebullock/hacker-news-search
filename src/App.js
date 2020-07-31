@@ -43,6 +43,7 @@ const App = () => {
     <div className="App">
       <h1>Hacker Stories</h1>
       <InputWithLabel
+        isFocused={true}
         label="Search:"
         name="search"
         id="search"
@@ -58,22 +59,23 @@ const App = () => {
 };
 
 const InputWithLabel = ({
-  label,
+  isFocused,
   name,
-  id,
   type = "text",
-  children,
+  id,
+  value,
   handleSearch,
-  searchTerm,
+  children,
 }) => {
   return (
     <>
       <label htmlFor={id}>{children}</label>
       <input
+        autoFocus={isFocused}
         name={name}
-        id={id}
         type={type}
-        value={searchTerm}
+        id={id}
+        value={value}
         onChange={handleSearch}
       />
     </>
