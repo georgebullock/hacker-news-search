@@ -24,11 +24,12 @@ const App = () => {
   const [stories, setStories] = useState([]);
 
   const getAsyncStories = () => {
-    Promise.resolve({ data: { stories: initialStories } }).then((res) => {
+    Promise.resolve({ data: { stories: initialStories } })
+    .then((res) => {
       setTimeout(() => {
         setStories(res.data.stories);
       }, 1000);
-    });
+    }).catch(new Error('Error: Fetching stories failed'));
   };
 
   useEffect(getAsyncStories, []);
