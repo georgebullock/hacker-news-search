@@ -84,13 +84,20 @@ const App = () => {
         <strong>Search:</strong>
       </InputWithLabel>
       <hr />
-      {isError && (<div>Error</div>)}
-      {isLoading ? (<div>Loading...</div>) : (<List list={filterStories} onRemoveItem={handleRemoveStory} />)}
+      {isError && <div>Error</div>}
+      {isLoading ? (
+        <div>Loading...</div>
+      ) : (
+        <List list={filterStories} onRemoveItem={handleRemoveStory} />
+      )}
     </div>
   );
 };
 
-// Other Components
+/***************************/
+/*    Other Components    */
+/*************************/
+
 const InputWithLabel = ({
   isFocused,
   name,
@@ -131,7 +138,6 @@ const List = ({ list, onRemoveItem }) => {
 
 const Item = ({ item, onRemoveItem }) => {
   const handleRemoveItem = () => {
-    console.log("item.objectId: ", item.objectId);
     onRemoveItem(item.objectId);
   };
 
