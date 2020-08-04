@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import "./App.css";
 
 const App = () => {
-  const stories = [
+  const initialStories = [
     {
       title: "React",
       url: "https://reactjs.org/",
@@ -21,6 +21,18 @@ const App = () => {
     },
   ];
 
+  const [stories, setStories] = useState([]);
+
+  const getAsyncStories = () => {
+    Promise.resolve({ data: { stories: initialStories } }).then((res) => {
+      setTimeout(() => {
+        setStories(res.data.stories);
+      }, 1000);
+    });
+  };
+
+  useEffect(getAsyncStories, []);
+
   const useSemiPersistentState = (key) => {
     let [value, setValue] = useState(localStorage.getItem(key) || "");
 
@@ -33,6 +45,15 @@ const App = () => {
 
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
+  };
+
+  const handleRemoveStory = (id) => {
+    const updatedStories = stories.filter((story) => {
+      return story.objectId !== id;
+    });
+
+    setStories(updatedStories);
+    console.log("Remove Story");
   };
 
   const filterStories = stories.filter((story) => {
@@ -53,7 +74,7 @@ const App = () => {
         <strong>Search:</strong>
       </InputWithLabel>
       <hr />
-      <List list={filterStories} />
+      <List list={filterStories} onRemoveItem={handleRemoveStory} />
     </div>
   );
 };
@@ -88,15 +109,20 @@ const InputWithLabel = ({
   );
 };
 
-const List = ({ list }) => {
+const List = ({ list, onRemoveItem }) => {
   const items = list.map((item) => {
-    return <Item key={item.objectId} item={item} />;
+    return <Item key={item.objectId} item={item} onRemoveItem={onRemoveItem} />;
   });
 
   return <ul>{items}</ul>;
 };
 
-const Item = ({ item }) => {
+const Item = ({ item, onRemoveItem }) => {
+  const handleRemoveItem = () => {
+    console.log("item.objectId: ", item.objectId);
+    onRemoveItem(item.objectId);
+  };
+
   return (
     <li>
       <p>Title: {item.title}</p>
@@ -104,8 +130,10 @@ const Item = ({ item }) => {
       <p>Author: {item.author}</p>
       <p>Comments: {item.commentsCount}</p>
       <p>Points: {item.points}</p>
+      <button onClick={handleRemoveItem}>Delete</button>
     </li>
   );
 };
 
 export default App;
+
