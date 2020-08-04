@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useReducer } from "react";
 import "./App.css";
 
 // Main app
@@ -22,18 +22,32 @@ const App = () => {
     },
   ];
 
-  const [stories, setStories] = useState([]);
+  const storiesReducer = (stories, action) => {
+    switch (action.type) {
+      case "SET_STORIES":
+        return action.payload;
+      case "REMOVE_STORY":
+        return stories.filter((story) => {
+          console.log("action.payload.objectId: ", action);
+          return action.payload !== story.objectId;
+        });
+      default:
+        throw new Error("Error: Stories action not found");
+    }
+  };
+
+  const [stories, dispatchStories] = useReducer(storiesReducer, []);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
 
   const getAsyncStories = () => {
-    Promise.reject({ data: { stories: initialStories } })
+    Promise.resolve({ data: { stories: initialStories } })
       .then((res) => {
         setIsLoading(true);
         setTimeout(() => {
-          setStories(res.data.stories);
+          dispatchStories({ type: "SET_STORIES", payload: res.data.stories });
           setIsLoading(false);
-        }, 3000);
+        }, 500);
       })
       .catch(() => {
         setIsError(true);
@@ -58,12 +72,7 @@ const App = () => {
   };
 
   const handleRemoveStory = (id) => {
-    const updatedStories = stories.filter((story) => {
-      return story.objectId !== id;
-    });
-
-    setStories(updatedStories);
-    console.log("Remove Story");
+    dispatchStories({ type: "REMOVE_STORY", payload: id });
   };
 
   const filterStories = stories.filter((story) => {
