@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./App.css";
 
+// Main app
 const App = () => {
   const initialStories = [
     {
@@ -22,14 +23,22 @@ const App = () => {
   ];
 
   const [stories, setStories] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
 
   const getAsyncStories = () => {
-    Promise.resolve({ data: { stories: initialStories } })
-    .then((res) => {
-      setTimeout(() => {
-        setStories(res.data.stories);
-      }, 1000);
-    }).catch(new Error('Error: Fetching stories failed'));
+    Promise.reject({ data: { stories: initialStories } })
+      .then((res) => {
+        setIsLoading(true);
+        setTimeout(() => {
+          setStories(res.data.stories);
+          setIsLoading(false);
+        }, 3000);
+      })
+      .catch(() => {
+        setIsError(true);
+        return new Error("Error: Fetching stories failed");
+      });
   };
 
   useEffect(getAsyncStories, []);
@@ -75,11 +84,18 @@ const App = () => {
         <strong>Search:</strong>
       </InputWithLabel>
       <hr />
-      <List list={filterStories} onRemoveItem={handleRemoveStory} />
+      {isLoading ? (
+        <div>Loading...</div>
+      ) : isError ? (
+        <div>Error</div>
+      ) : (
+        <List list={filterStories} onRemoveItem={handleRemoveStory} />
+      )}
     </div>
   );
 };
 
+// Other Components
 const InputWithLabel = ({
   isFocused,
   name,
@@ -137,4 +153,3 @@ const Item = ({ item, onRemoveItem }) => {
 };
 
 export default App;
-
