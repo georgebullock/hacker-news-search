@@ -84,13 +84,8 @@ const App = () => {
         <strong>Search:</strong>
       </InputWithLabel>
       <hr />
-      {isLoading ? (
-        <div>Loading...</div>
-      ) : isError ? (
-        <div>Error</div>
-      ) : (
-        <List list={filterStories} onRemoveItem={handleRemoveStory} />
-      )}
+      {isError && (<div>Error</div>)}
+      {isLoading ? (<div>Loading...</div>) : (<List list={filterStories} onRemoveItem={handleRemoveStory} />)}
     </div>
   );
 };
