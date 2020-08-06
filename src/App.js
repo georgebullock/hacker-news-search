@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useRef, useReducer } from "react";
 import "./App.css";
 
-// Main app
+/***************************/
+/*        Main App        */
+/*************************/
 const App = () => {
   const initialStories = [
     {
@@ -22,40 +24,72 @@ const App = () => {
     },
   ];
 
-  const storiesReducer = (stories, action) => {
+  /***************************/
+  /*      State Mgmt        */
+  /*************************/
+  const storiesReducer = (state, action) => {
     switch (action.type) {
-      case "SET_STORIES":
-        return action.payload;
+      case "INIT_STORIES":
+        return {
+          ...state,
+          isLoading: true,
+          isError: false,
+        };
+      case "FETCH_STORIES":
+        return {
+          ...state,
+          isLoading: false,
+          isError: false,
+          data: action.payload,
+        };
       case "REMOVE_STORY":
-        return stories.filter((story) => {
-          console.log("action.payload.objectId: ", action);
-          return action.payload !== story.objectId;
-        });
+        return {
+          ...state,
+          isLoading: false,
+          isError: false,
+          data: state.data.filter((story) => {
+            return action.payload !== story.objectId;
+          }),
+        };
+
       default:
         throw new Error("Error: Stories action not found");
     }
   };
 
-  const [stories, dispatchStories] = useReducer(storiesReducer, []);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isError, setIsError] = useState(false);
+  const [stories, dispatchStories] = useReducer(storiesReducer, {
+    data: [],
+    isLoading: false,
+    isError: false,
+  });
 
+  /***************************/
+  /*      Fetch Data        */
+  /*************************/
   const getAsyncStories = () => {
+    dispatchStories({ type: "INIT_STORIES" });
     Promise.resolve({ data: { stories: initialStories } })
       .then((res) => {
-        setIsLoading(true);
         setTimeout(() => {
-          dispatchStories({ type: "SET_STORIES", payload: res.data.stories });
-          setIsLoading(false);
+          dispatchStories({
+            type: "FETCH_STORIES",
+            payload: res.data.stories,
+          });
         }, 500);
       })
       .catch(() => {
-        setIsError(true);
         return new Error("Error: Fetching stories failed");
       });
   };
 
-  useEffect(getAsyncStories, []);
+  useEffect(() => {
+    getAsyncStories();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  /***************************/
+  /*        Search          */
+  /*************************/
 
   const useSemiPersistentState = (key) => {
     let [value, setValue] = useState(localStorage.getItem(key) || "");
@@ -71,13 +105,16 @@ const App = () => {
     setSearchTerm(e.target.value);
   };
 
+  const filterStories = stories.data.filter((story) => {
+    return story.title.toLowerCase().includes(searchTerm.toLowerCase());
+  });
+
+  /***************************/
+  /*      Remove Story      */
+  /*************************/
   const handleRemoveStory = (id) => {
     dispatchStories({ type: "REMOVE_STORY", payload: id });
   };
-
-  const filterStories = stories.filter((story) => {
-    return story.title.toLowerCase().includes(searchTerm.toLowerCase());
-  });
 
   return (
     <div className="App">
@@ -93,8 +130,8 @@ const App = () => {
         <strong>Search:</strong>
       </InputWithLabel>
       <hr />
-      {isError && <div>Error</div>}
-      {isLoading ? (
+      {stories.isError && <div>Error</div>}
+      {stories.isLoading ? (
         <div>Loading...</div>
       ) : (
         <List list={filterStories} onRemoveItem={handleRemoveStory} />
