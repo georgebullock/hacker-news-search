@@ -84,17 +84,19 @@ const App = () => {
     dispatchStories({ type: "STORIES_INIT_STORIES" });
 
     fetch(`${FETCH_URL}${searchTerm}`)
-      .then((res) => res.json())
+      .then((res) => {
+        if (res.ok) return console.error(res);
+        res.json();
+      })
       .then((result) => {
-        console.log(result);
         dispatchStories({
           type: "STORIES_FETCH_SUCCESS",
           payload: result.hits,
         });
       })
-      .catch(() => {
+      .catch((error) => {
         dispatchStories({ type: "STORIES_FETCH_FAILURE" });
-        return new Error("Error: Fetching stories failed");
+        console.error(error);
       });
   }, [searchTerm]);
 
