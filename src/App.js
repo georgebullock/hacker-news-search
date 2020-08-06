@@ -85,8 +85,8 @@ const App = () => {
 
     fetch(`${FETCH_URL}${searchTerm}`)
       .then((res) => {
-        if (res.ok) return console.error(res);
-        res.json();
+        if (!res.ok) return console.error(res);
+        return res.json();
       })
       .then((result) => {
         dispatchStories({
