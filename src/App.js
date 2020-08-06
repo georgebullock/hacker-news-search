@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useRef, useReducer } from "react";
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useReducer,
+  useCallback,
+} from "react";
 import "./App.css";
 
 /***************************/
@@ -72,7 +78,7 @@ const App = () => {
   /*************************/
   const FETCH_URL = "https://hn.algolia.com/api/v1/search?query=";
 
-  useEffect(() => {
+  const handleFetchData = useCallback(() => {
     if (!searchTerm) return;
 
     dispatchStories({ type: "STORIES_INIT_STORIES" });
@@ -91,6 +97,10 @@ const App = () => {
         return new Error("Error: Fetching stories failed");
       });
   }, [searchTerm]);
+
+  useEffect(() => {
+    handleFetchData();
+  }, [handleFetchData]);
 
   /***************************/
   /*      Remove Story      */
