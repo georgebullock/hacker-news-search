@@ -29,20 +29,20 @@ const App = () => {
   /*************************/
   const storiesReducer = (state, action) => {
     switch (action.type) {
-      case "INIT_STORIES":
+      case "STORIES_INIT_STORIES":
         return {
           ...state,
           isLoading: true,
           isError: false,
         };
-      case "FETCH_STORIES":
+      case "STORIES_FETCH_STORIES":
         return {
           ...state,
           isLoading: false,
           isError: false,
           data: action.payload,
         };
-      case "REMOVE_STORY":
+      case "STORIES_REMOVE_STORY":
         return {
           ...state,
           isLoading: false,
@@ -67,12 +67,12 @@ const App = () => {
   /*      Fetch Data        */
   /*************************/
   const getAsyncStories = () => {
-    dispatchStories({ type: "INIT_STORIES" });
+    dispatchStories({ type: "STORIES_INIT_STORIES" });
     Promise.resolve({ data: { stories: initialStories } })
       .then((res) => {
         setTimeout(() => {
           dispatchStories({
-            type: "FETCH_STORIES",
+            type: "STORIES_FETCH_STORIES",
             payload: res.data.stories,
           });
         }, 500);
@@ -113,7 +113,7 @@ const App = () => {
   /*      Remove Story      */
   /*************************/
   const handleRemoveStory = (id) => {
-    dispatchStories({ type: "REMOVE_STORY", payload: id });
+    dispatchStories({ type: "STORIES_REMOVE_STORY", payload: id });
   };
 
   return (
