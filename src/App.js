@@ -5,25 +5,6 @@ import "./App.css";
 /*        Main App        */
 /*************************/
 const App = () => {
-  const initialStories = [
-    {
-      title: "React",
-      url: "https://reactjs.org/",
-      author: "Jordan Walke",
-      commentsCount: 3,
-      points: 4,
-      objectId: 0,
-    },
-    {
-      title: "Redux",
-      url: "https://redux.js.org/",
-      author: "Dan Abramov and Andrew Clark",
-      commentsCount: 2,
-      points: 5,
-      objectId: 1,
-    },
-  ];
-
   /***************************/
   /*      State Mgmt        */
   /*************************/
@@ -35,12 +16,18 @@ const App = () => {
           isLoading: true,
           isError: false,
         };
-      case "STORIES_FETCH_STORIES":
+      case "STORIES_FETCH_SUCCESS":
         return {
           ...state,
           isLoading: false,
           isError: false,
           data: action.payload,
+        };
+      case "STORIES_FETCH_FAILURE":
+        return {
+          ...state,
+          isLoading: false,
+          isError: true,
         };
       case "STORIES_REMOVE_STORY":
         return {
@@ -51,7 +38,6 @@ const App = () => {
             return action.payload !== story.objectId;
           }),
         };
-
       default:
         throw new Error("Error: Stories action not found");
     }
@@ -62,30 +48,6 @@ const App = () => {
     isLoading: false,
     isError: false,
   });
-
-  /***************************/
-  /*      Fetch Data        */
-  /*************************/
-  const getAsyncStories = () => {
-    dispatchStories({ type: "STORIES_INIT_STORIES" });
-    Promise.resolve({ data: { stories: initialStories } })
-      .then((res) => {
-        setTimeout(() => {
-          dispatchStories({
-            type: "STORIES_FETCH_STORIES",
-            payload: res.data.stories,
-          });
-        }, 500);
-      })
-      .catch(() => {
-        return new Error("Error: Fetching stories failed");
-      });
-  };
-
-  useEffect(() => {
-    getAsyncStories();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   /***************************/
   /*        Search          */
@@ -105,9 +67,30 @@ const App = () => {
     setSearchTerm(e.target.value);
   };
 
-  const filterStories = stories.data.filter((story) => {
-    return story.title.toLowerCase().includes(searchTerm.toLowerCase());
-  });
+  /***************************/
+  /*      Fetch Data        */
+  /*************************/
+  const FETCH_URL = "https://hn.algolia.com/api/v1/search?query=";
+
+  useEffect(() => {
+    if (!searchTerm) return;
+
+    dispatchStories({ type: "STORIES_INIT_STORIES" });
+
+    fetch(`${FETCH_URL}${searchTerm}`)
+      .then((res) => res.json())
+      .then((result) => {
+        console.log(result);
+        dispatchStories({
+          type: "STORIES_FETCH_SUCCESS",
+          payload: result.hits,
+        });
+      })
+      .catch(() => {
+        dispatchStories({ type: "STORIES_FETCH_FAILURE" });
+        return new Error("Error: Fetching stories failed");
+      });
+  }, [searchTerm]);
 
   /***************************/
   /*      Remove Story      */
@@ -130,11 +113,11 @@ const App = () => {
         <strong>Search:</strong>
       </InputWithLabel>
       <hr />
-      {stories.isError && <div>Error</div>}
+      {stories.isError && <div>Error: Cannot get stories</div>}
       {stories.isLoading ? (
         <div>Loading...</div>
       ) : (
-        <List list={filterStories} onRemoveItem={handleRemoveStory} />
+        <List list={stories.data} onRemoveItem={handleRemoveStory} />
       )}
     </div>
   );
@@ -176,7 +159,7 @@ const InputWithLabel = ({
 
 const List = ({ list, onRemoveItem }) => {
   const items = list.map((item) => {
-    return <Item key={item.objectId} item={item} onRemoveItem={onRemoveItem} />;
+    return <Item key={item.objectID} item={item} onRemoveItem={onRemoveItem} />;
   });
 
   return <ul>{items}</ul>;
