@@ -10,6 +10,7 @@ import "./App.css";
 /***************************/
 /*        Main App        */
 /*************************/
+
 const App = () => {
   /***************************/
   /*      State Mgmt        */
@@ -84,24 +85,23 @@ const App = () => {
 
   const [url, setUrl] = useState(`${FETCH_URL}${searchTerm}`);
 
-  const handleFetchData = useCallback(() => {
+  const handleFetchData = useCallback(async () => {
     dispatchStories({ type: "STORIES_INIT_STORIES" });
 
-    fetch(url)
-      .then((res) => {
+    try {
+      const response = await fetch(url).then((res) => {
         if (!res.ok) return console.error(res);
         return res.json();
-      })
-      .then((result) => {
-        dispatchStories({
-          type: "STORIES_FETCH_SUCCESS",
-          payload: result.hits,
-        });
-      })
-      .catch((error) => {
-        dispatchStories({ type: "STORIES_FETCH_FAILURE" });
-        console.error(error);
       });
+
+      dispatchStories({
+        type: "STORIES_FETCH_SUCCESS",
+        payload: response.hits,
+      });
+    } catch (error) {
+      dispatchStories({ type: "STORIES_FETCH_FAILURE" });
+      console.error(error);
+    }
   }, [url]);
 
   useEffect(() => {
