@@ -5,7 +5,7 @@ import React, {
   useReducer,
   useCallback,
 } from "react";
-import "./App.css";
+import styles from "./App.module.css";
 
 /***************************/
 /*        Main App        */
@@ -120,14 +120,13 @@ const App = () => {
   /*       Render App       */
   /*************************/
   return (
-    <div className="App">
-      <h1>Hacker Stories</h1>
+    <div className={styles.container}>
+      <h1 className={styles.headlinePrimary}>Hacker Stories</h1>
       <SearchForm
         handleSearch={handleSearch}
         searchTerm={searchTerm}
         searchSubmit={handleSearchSubmit}
       />
-      <hr />
       {stories.isError && <div>Error: Cannot get stories</div>}
       {stories.isLoading ? (
         <div>Loading...</div>
@@ -144,7 +143,7 @@ const App = () => {
 
 const SearchForm = ({ handleSearch, searchTerm, handleSearchSubmit }) => {
   return (
-    <form onSubmit={handleSearchSubmit}>
+    <form className={styles.searchForm} onSubmit={handleSearchSubmit}>
       <InputWithLabel
         isFocused={true}
         label="Search:"
@@ -155,7 +154,11 @@ const SearchForm = ({ handleSearch, searchTerm, handleSearchSubmit }) => {
         <strong>Search:</strong>
       </InputWithLabel>
 
-      <button type="submit" disabled={!searchTerm}>
+      <button
+        className={`${styles.button} ${styles.buttonLarge}`}
+        type="submit"
+        disabled={!searchTerm}
+      >
         Submit
       </button>
     </form>
@@ -179,7 +182,9 @@ const InputWithLabel = ({
 
   return (
     <>
-      <label htmlFor={id}>{children}</label>
+      <label className={styles.label} htmlFor={id}>
+        {children}
+      </label>
       <input
         name={name}
         type={type}
@@ -187,6 +192,7 @@ const InputWithLabel = ({
         value={value}
         onChange={handleSearch}
         ref={inputRef}
+        className={styles.input}
       />
     </>
   );
@@ -206,13 +212,18 @@ const Item = ({ item, onRemoveItem }) => {
   };
 
   return (
-    <li>
-      <p>Title: {item.title}</p>
-      <p>Link: {item.url}</p>
-      <p>Author: {item.author}</p>
-      <p>Comments: {item.commentsCount}</p>
-      <p>Points: {item.points}</p>
-      <button onClick={handleRemoveItem}>Delete</button>
+    <li className={styles.item}>
+      <span style={{ width: "40%" }}>Title: {item.title}</span>
+      <span style={{ width: "30%" }}>Author: {item.author}</span>
+      <span style={{ width: "10%" }}>Comments: {item.commentsCount}</span>
+      <span style={{ width: "10%" }}>Link: {item.url}</span>
+      <span style={{ width: "10%" }}>Points: {item.points}</span>
+      <button
+        className={`${styles.button} ${styles.buttonSmall}`}
+        onClick={handleRemoveItem}
+      >
+        Delete
+      </button>
     </li>
   );
 };
