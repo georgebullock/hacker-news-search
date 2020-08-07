@@ -74,8 +74,9 @@ const App = () => {
     setSearchTerm(e.target.value);
   };
 
-  const handleSearchSubmit = () => {
+  const handleSearchSubmit = (e) => {
     setUrl(`${FETCH_URL}${searchTerm}`);
+    e.preventDefault();
   };
 
   /***************************/
@@ -115,24 +116,17 @@ const App = () => {
     dispatchStories({ type: "STORIES_REMOVE_STORY", payload: id });
   };
 
+  /***************************/
+  /*       Render App       */
+  /*************************/
   return (
     <div className="App">
       <h1>Hacker Stories</h1>
-      <InputWithLabel
-        isFocused={true}
-        label="Search:"
-        name="search"
-        id="search"
+      <SearchForm
         handleSearch={handleSearch}
         searchTerm={searchTerm}
-      >
-        <strong>Search:</strong>
-      </InputWithLabel>
-
-      <button type="button" disabled={!searchTerm} onClick={handleSearchSubmit}>
-        Submit
-      </button>
-
+        searchSubmit={handleSearchSubmit}
+      />
       <hr />
       {stories.isError && <div>Error: Cannot get stories</div>}
       {stories.isLoading ? (
@@ -147,6 +141,26 @@ const App = () => {
 /***************************/
 /*    Other Components    */
 /*************************/
+
+const SearchForm = ({ handleSearch, searchTerm, handleSearchSubmit }) => {
+  return (
+    <form onSubmit={handleSearchSubmit}>
+      <InputWithLabel
+        isFocused={true}
+        label="Search:"
+        name="search"
+        id="search"
+        handleSearch={handleSearch}
+      >
+        <strong>Search:</strong>
+      </InputWithLabel>
+
+      <button type="submit" disabled={!searchTerm}>
+        Submit
+      </button>
+    </form>
+  );
+};
 
 const InputWithLabel = ({
   isFocused,
