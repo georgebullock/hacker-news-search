@@ -59,18 +59,22 @@ const App = () => {
   /*        Search          */
   /*************************/
 
-  const useSemiPersistentState = (key) => {
-    let [value, setValue] = useState(localStorage.getItem(key) || "");
+  const useSemiPersistentState = (key, initialState) => {
+    let [value, setValue] = useState(localStorage.getItem(key) || initialState);
 
     useEffect(() => localStorage.setItem(key, value), [key, value]);
 
     return [value, setValue];
   };
 
-  const [searchTerm, setSearchTerm] = useSemiPersistentState("search");
+  const [searchTerm, setSearchTerm] = useSemiPersistentState("search", "");
 
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
+  };
+
+  const handleSearchSubmit = () => {
+    setUrl(`${FETCH_URL}${searchTerm}`);
   };
 
   /***************************/
@@ -78,12 +82,12 @@ const App = () => {
   /*************************/
   const FETCH_URL = "https://hn.algolia.com/api/v1/search?query=";
 
-  const handleFetchData = useCallback(() => {
-    if (!searchTerm) return;
+  const [url, setUrl] = useState(`${FETCH_URL}${searchTerm}`);
 
+  const handleFetchData = useCallback(() => {
     dispatchStories({ type: "STORIES_INIT_STORIES" });
 
-    fetch(`${FETCH_URL}${searchTerm}`)
+    fetch(url)
       .then((res) => {
         if (!res.ok) return console.error(res);
         return res.json();
@@ -98,7 +102,7 @@ const App = () => {
         dispatchStories({ type: "STORIES_FETCH_FAILURE" });
         console.error(error);
       });
-  }, [searchTerm]);
+  }, [url]);
 
   useEffect(() => {
     handleFetchData();
@@ -124,6 +128,11 @@ const App = () => {
       >
         <strong>Search:</strong>
       </InputWithLabel>
+
+      <button type="button" disabled={!searchTerm} onClick={handleSearchSubmit}>
+        Submit
+      </button>
+
       <hr />
       {stories.isError && <div>Error: Cannot get stories</div>}
       {stories.isLoading ? (
