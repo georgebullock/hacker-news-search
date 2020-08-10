@@ -2,7 +2,7 @@
 
 ### OVERVIEW
 
-Hacker News Search is a project I did to learn React Hooks. It was inspired by a tutorial project by Robin Weiruch and Educative.io
+Hacker News Search is a project I did to learn React Hooks. The project was inspired by a tutorial authored by @rwieruch and Educative.io
 
 ### THE PROJECT STACK
 
@@ -32,15 +32,17 @@ yarn start
 
 #### Project Motivation:
 
-I was already familiar with class-based React, but I didn't know React Hooks. This project allowed me to quickly learn Hooks and start using them in projects.
+Prior to finishing the tutorial, I was familiar with class-based React, but I didn't know React Hooks. Via this project, I learned the fundamentals of React Hooks and gained some experience using them.
 
 #### Project Status:
 
-The project is active, but not a priority. The only outstanding task is styling the app.
+The project is active, but it's not a priority. Outstanding tasks include modularizing the app, improving the styling, and writing tests.
 
 #### Project Roadmap:
 
-Improve the app's styling.
+1. Break up the app into modules
+2. Improve the app's styling
+3. Write unit tests
 
 #### Known Issues:
 
