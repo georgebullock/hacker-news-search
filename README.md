@@ -40,8 +40,8 @@ The project is active, but not a priority. The only outstanding task is styling 
 
 #### Project Roadmap:
 
-Improve the app's styling
+Improve the app's styling.
 
 #### Known Issues:
 
-None that I'm aware of
+None that I'm aware of.
