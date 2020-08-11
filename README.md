@@ -6,7 +6,7 @@ Hacker News Search is a project I did to learn React Hooks. The project was insp
 
 ### THE PROJECT STACK
 
-The project was boostrapped using Create React App
+The project was bootstrapped using Create React App
 
 ### SETUP IS SIMPLE 👇
 
