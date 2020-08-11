@@ -42,7 +42,7 @@ const App = () => {
           isLoading: false,
           isError: false,
           data: state.data.filter((story) => {
-            return action.payload !== story.objectId;
+            return action.payload !== story.objectID;
           }),
         };
       default:
@@ -208,7 +208,7 @@ const List = ({ list, onRemoveItem }) => {
 
 const Item = ({ item, onRemoveItem }) => {
   const handleRemoveItem = () => {
-    onRemoveItem(item.objectId);
+    onRemoveItem(item.objectID);
   };
 
   return (
