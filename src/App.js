@@ -141,7 +141,7 @@ const App = () => {
         />
         {stories.isError && <div>Error: Cannot get stories</div>}
         {stories.isLoading ? (
-          <div>Loading...</div>
+          <div className={styles.loadingText}>Loading...</div>
         ) : (
           <List list={stories.data} onRemoveItem={handleRemoveStory} />
         )}
@@ -187,6 +187,7 @@ const Input = ({
       name={name}
       type={type}
       id={id}
+      defaultValue="Search"
       value={value}
       onChange={handleSearch}
       ref={inputRef}
