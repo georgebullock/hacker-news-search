@@ -131,20 +131,22 @@ const App = () => {
   /*       Render App       */
   /*************************/
   return (
-    <div className={styles.container}>
-      <h1 className={styles.headlinePrimary}>Hacker News Search</h1>
-      <SearchForm
-        handleSearch={handleSearch}
-        searchTerm={searchTerm}
-        searchSubmit={handleSearchSubmit}
-      />
-      {stories.isError && <div>Error: Cannot get stories</div>}
-      {stories.isLoading ? (
-        <div>Loading...</div>
-      ) : (
-        <List list={stories.data} onRemoveItem={handleRemoveStory} />
-      )}
-    </div>
+    <main className={styles.container}>
+      <div className={styles.innerContainer}>
+        <h1 className={styles.headlinePrimary}>Hacker News Search</h1>
+        <SearchForm
+          handleSearch={handleSearch}
+          searchTerm={searchTerm}
+          searchSubmit={handleSearchSubmit}
+        />
+        {stories.isError && <div>Error: Cannot get stories</div>}
+        {stories.isLoading ? (
+          <div>Loading...</div>
+        ) : (
+          <List list={stories.data} onRemoveItem={handleRemoveStory} />
+        )}
+      </div>
+    </main>
   );
 };
 
@@ -198,7 +200,7 @@ const List = ({ list, onRemoveItem }) => {
     return <Item key={item.objectID} item={item} onRemoveItem={onRemoveItem} />;
   });
 
-  return <ul>{items}</ul>;
+  return <ul className={styles.list}>{items}</ul>;
 };
 
 const Item = ({ item, onRemoveItem }) => {
@@ -206,23 +208,21 @@ const Item = ({ item, onRemoveItem }) => {
     onRemoveItem(item.objectID);
   };
 
-  console.log("item: ", item);
-
   return (
     <li className={styles.item}>
       <a href={item.url}>
         <span>{item.title}</span>
       </a>
       <p>
-        <span>{item.points} points.</span>
-        <span>{item.num_comments} comments.</span>
-        <span>By {item.author}</span>
+        <span>
+          {`${item.points} points. ${item.num_comments} comments. By ${item.author}.`}
+        </span>
       </p>
       <button
         className={`${styles.button} ${styles.buttonSmall}`}
         onClick={handleRemoveItem}
       >
-        <TrashIcon style={{ width: "1rem", height: "1rem" }} />
+        <TrashIcon style={{ width: "1.2rem", height: "1.2rem" }} />
       </button>
     </li>
   );
