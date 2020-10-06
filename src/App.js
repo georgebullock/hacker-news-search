@@ -5,7 +5,8 @@ import React, {
   useReducer,
   useCallback,
 } from "react";
-import styles from "./App.module.css";
+import { ReactComponent as TrashIcon } from "./trash.svg";
+import styles from "./App.module.scss";
 
 /***************************/
 /*        Main App        */
@@ -90,10 +91,20 @@ const App = () => {
     dispatchStories({ type: "STORIES_INIT_STORIES" });
 
     try {
-      const response = await fetch(url).then((res) => {
-        if (!res.ok) return console.error(res);
-        return res.json();
-      });
+      const response = await fetch(url)
+        .then((res) => {
+          if (!res.ok) return console.error(res);
+          return res.json();
+        })
+        .then((res) => {
+          const filteredRes = res.hits.filter((item) => {
+            return item.url && item.title;
+          });
+
+          return {
+            hits: filteredRes,
+          };
+        });
 
       dispatchStories({
         type: "STORIES_FETCH_SUCCESS",
@@ -121,7 +132,7 @@ const App = () => {
   /*************************/
   return (
     <div className={styles.container}>
-      <h1 className={styles.headlinePrimary}>Hacker Stories</h1>
+      <h1 className={styles.headlinePrimary}>Hacker News Search</h1>
       <SearchForm
         handleSearch={handleSearch}
         searchTerm={searchTerm}
@@ -144,28 +155,17 @@ const App = () => {
 const SearchForm = ({ handleSearch, searchTerm, handleSearchSubmit }) => {
   return (
     <form className={styles.searchForm} onSubmit={handleSearchSubmit}>
-      <InputWithLabel
+      <Input
         isFocused={true}
-        label="Search:"
         name="search"
         id="search"
         handleSearch={handleSearch}
-      >
-        <strong>Search:</strong>
-      </InputWithLabel>
-
-      <button
-        className={`${styles.button} ${styles.buttonLarge}`}
-        type="submit"
-        disabled={!searchTerm}
-      >
-        Submit
-      </button>
+      />
     </form>
   );
 };
 
-const InputWithLabel = ({
+const Input = ({
   isFocused,
   name,
   type = "text",
@@ -181,20 +181,15 @@ const InputWithLabel = ({
   }, [isFocused]);
 
   return (
-    <>
-      <label className={styles.label} htmlFor={id}>
-        {children}
-      </label>
-      <input
-        name={name}
-        type={type}
-        id={id}
-        value={value}
-        onChange={handleSearch}
-        ref={inputRef}
-        className={styles.input}
-      />
-    </>
+    <input
+      name={name}
+      type={type}
+      id={id}
+      value={value}
+      onChange={handleSearch}
+      ref={inputRef}
+      className={styles.input}
+    />
   );
 };
 
@@ -211,18 +206,23 @@ const Item = ({ item, onRemoveItem }) => {
     onRemoveItem(item.objectID);
   };
 
+  console.log("item: ", item);
+
   return (
     <li className={styles.item}>
-      <span style={{ width: "40%" }}>Title: {item.title}</span>
-      <span style={{ width: "30%" }}>Author: {item.author}</span>
-      <span style={{ width: "10%" }}>Comments: {item.commentsCount}</span>
-      <span style={{ width: "10%" }}>Link: {item.url}</span>
-      <span style={{ width: "10%" }}>Points: {item.points}</span>
+      <a href={item.url}>
+        <span>{item.title}</span>
+      </a>
+      <p>
+        <span>{item.points} points.</span>
+        <span>{item.num_comments} comments.</span>
+        <span>By {item.author}</span>
+      </p>
       <button
         className={`${styles.button} ${styles.buttonSmall}`}
         onClick={handleRemoveItem}
       >
-        Delete
+        <TrashIcon style={{ width: "1rem", height: "1rem" }} />
       </button>
     </li>
   );
