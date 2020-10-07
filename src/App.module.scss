@@ -1,15 +1,61 @@
 .container {
   display: flex;
+  // margin: 0 100% * (1/12);
   flex-direction: column;
   justify-content: center;
-  margin: 0 100% * (1/12);
   text-align: center;
+
+  &:before {
+    content: " ";
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    // margin: 0 100% * (1/12);
+    z-index: -10;
+    opacity: 20%;
+    background-image: url(./man-reading-newspaper.jpg);
+    background-size: cover;
+    overflow: visible;
+    background-repeat: no-repeat;
+  }
+
+  &:after {
+    content: " ";
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    opacity: 10%;
+    background-color: #ff6600;
+  }
+}
+
+.header {
+  position: sticky;
+  top: 0;
+  margin: 0 0 2.5rem 0;
+  padding: 2rem 0;
+  background-color: #ff6600;
+}
+
+.headlineMain {
+  margin: 0 0 1.2rem 0;
 }
 
 .input {
+  width: 50%;
   padding: 0.5rem;
   color: #555;
   font-size: 1rem;
+  border: none;
+  border-radius: 0.4rem;
+  box-shadow: 0.1rem 0.2rem 0.6rem #555;
 }
 
 .list {

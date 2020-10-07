@@ -133,13 +133,18 @@ const App = () => {
   return (
     <main className={styles.container}>
       <div className={styles.innerContainer}>
-        <h1 className={styles.headlinePrimary}>Hacker News Search</h1>
-        <SearchForm
-          handleSearch={handleSearch}
-          searchTerm={searchTerm}
-          searchSubmit={handleSearchSubmit}
-        />
+        <header className={styles.header}>
+          <h1 className={styles.headlineMain}>Hacker News Search</h1>
+
+          <SearchForm
+            handleSearch={handleSearch}
+            searchTerm={searchTerm}
+            searchSubmit={handleSearchSubmit}
+          />
+        </header>
+
         {stories.isError && <div>Error: Cannot get stories</div>}
+
         {stories.isLoading ? (
           <div className={styles.loadingText}>Loading...</div>
         ) : (
