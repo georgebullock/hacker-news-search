@@ -15,7 +15,7 @@
     height: 100%;
     z-index: -10;
     opacity: 20%;
-    background-image: url(./man-reading-newspaper.jpg);
+    background-image: url(./../../assets/images/man-reading-newspaper.jpg);
     background-size: cover;
     overflow: visible;
     background-repeat: no-repeat;
@@ -45,53 +45,6 @@
 
 .headlineMain {
   margin: 0 0 1.2rem 0;
-}
-
-.input {
-  width: 50%;
-  padding: 0.5rem;
-  color: #555;
-  font-size: 1rem;
-  border: none;
-  border-radius: 0.4rem;
-  box-shadow: 0.1rem 0.2rem 0.6rem #555;
-}
-
-.list {
-  padding: 0;
-  list-style-type: none;
-}
-
-.list > li {
-  margin: 0 0 1rem 0;
-  padding: 0;
-  list-style-type: none;
-}
-
-.item > a {
-  color: #000;
-  font-weight: bold;
-  font-size: 1.2rem;
-  text-decoration: none;
-  transition: color 300ms;
-
-  &:hover {
-    color: #ff6600;
-    text-decoration: underline;
-  }
-}
-
-.item > p {
-  margin: 0.5rem 0;
-  padding: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-  color: #555;
-}
-
-.button {
-  border: none;
-  background-color: transparent;
 }
 
 .loadingText {

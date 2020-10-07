@@ -1,11 +1,6 @@
-import React, {
-  useState,
-  useEffect,
-  useRef,
-  useReducer,
-  useCallback,
-} from "react";
-import { ReactComponent as TrashIcon } from "./trash.svg";
+import React, { useState, useEffect, useReducer, useCallback } from "react";
+import SearchForm from "./../../shared/SearchForm/SearchForm";
+import List from "./../../shared/List/List";
 import styles from "./App.module.scss";
 
 /***************************/
@@ -152,85 +147,6 @@ const App = () => {
         )}
       </div>
     </main>
-  );
-};
-
-/***************************/
-/*    Other Components    */
-/*************************/
-
-const SearchForm = ({ handleSearch, searchTerm, handleSearchSubmit }) => {
-  return (
-    <form className={styles.searchForm} onSubmit={handleSearchSubmit}>
-      <Input
-        isFocused={true}
-        name="search"
-        id="search"
-        handleSearch={handleSearch}
-      />
-    </form>
-  );
-};
-
-const Input = ({
-  isFocused,
-  name,
-  type = "text",
-  id,
-  value,
-  handleSearch,
-  children,
-}) => {
-  const inputRef = useRef(null);
-
-  useEffect(() => {
-    if (isFocused) inputRef.current.focus();
-  }, [isFocused]);
-
-  return (
-    <input
-      name={name}
-      type={type}
-      id={id}
-      defaultValue="Search"
-      value={value}
-      onChange={handleSearch}
-      ref={inputRef}
-      className={styles.input}
-    />
-  );
-};
-
-const List = ({ list, onRemoveItem }) => {
-  const items = list.map((item) => {
-    return <Item key={item.objectID} item={item} onRemoveItem={onRemoveItem} />;
-  });
-
-  return <ul className={styles.list}>{items}</ul>;
-};
-
-const Item = ({ item, onRemoveItem }) => {
-  const handleRemoveItem = () => {
-    onRemoveItem(item.objectID);
-  };
-
-  return (
-    <li className={styles.item}>
-      <a href={item.url}>
-        <span>{item.title}</span>
-      </a>
-      <p>
-        <span>
-          {`${item.points} points. ${item.num_comments} comments. By ${item.author}.`}
-        </span>
-      </p>
-      <button
-        className={`${styles.button} ${styles.buttonSmall}`}
-        onClick={handleRemoveItem}
-      >
-        <TrashIcon style={{ width: "1.2rem", height: "1.2rem" }} />
-      </button>
-    </li>
   );
 };
 
