@@ -34,7 +34,6 @@ const Input = ({
       name={name}
       type={type}
       id={id}
-      defaultValue="Search"
       value={value}
       onChange={handleSearch}
       ref={inputRef}
