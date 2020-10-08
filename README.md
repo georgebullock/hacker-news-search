@@ -2,7 +2,7 @@
 
 ### OVERVIEW
 
-Hacker News Search is a project I did to learn React Hooks. The project was inspired by a tutorial authored by @rwieruch and Educative.io
+Hacker News Search is a project I did to learn React Hooks. The project was inspired by an article authored by @rwieruch.
 
 ### THE PROJECT STACK
 
@@ -36,13 +36,12 @@ Prior to finishing the tutorial, I was familiar with class-based React, but I di
 
 #### Project Status:
 
-The project is active, but it's not a priority. Outstanding tasks include modularizing the app, improving the styling, and writing tests.
+The project is active, but it's not a priority. Outstanding tasks include converting Vanilla JavaScipt to TypeScript and adding tests.
 
 #### Project Roadmap:
 
-1. Break up the app into modules
-2. Improve the app's styling
-3. Write unit tests
+1. Convert Vanilla JavaScipt to TypeScript
+2. Write tests
 
 #### Known Issues:
 
