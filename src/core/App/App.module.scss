@@ -34,3 +34,16 @@
     background-color: #ff6600;
   }
 }
+
+.header {
+  position: sticky;
+  top: 0;
+  margin: 0 0 2.5rem 0;
+  padding: 2rem 0;
+  background-color: #ff6600;
+  box-shadow: 0.1rem 0.2rem 0.6rem #555;
+}
+
+.headlineMain {
+  margin: 0 0 1.2rem 0;
+}
