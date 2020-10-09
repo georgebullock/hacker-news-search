@@ -1,11 +1,10 @@
-import React, { useState, useEffect, useReducer, useCallback } from "react";
-import { useWebStorage } from "./../../shared/hooks/useWebStorage";
+import React, { useEffect, useReducer, useCallback } from "react";
 import { storiesReducer } from "../Stories/storiesReducer";
-import SearchForm from "./../../shared/SearchForm/SearchForm";
+
 import List from "./../../shared/List/List";
 import styles from "./Stories.module.scss";
 
-const Stories = () => {
+const Stories = ({ url }) => {
   const [stories, dispatchStories] = useReducer(storiesReducer, {
     data: [],
     isLoading: false,
@@ -13,26 +12,8 @@ const Stories = () => {
   });
 
   /***************************/
-  /*         Search         */
+  /*      Fetch Stories     */
   /*************************/
-  const [searchTerm, setSearchTerm] = useWebStorage("search", "");
-
-  const handleSearch = (e) => {
-    setSearchTerm(e.target.value);
-  };
-
-  const handleSearchSubmit = (e) => {
-    setUrl(`${FETCH_URL}${searchTerm}`);
-    e.preventDefault();
-  };
-
-  /***************************/
-  /*      Fetch Data        */
-  /*************************/
-  const FETCH_URL = "https://hn.algolia.com/api/v1/search?query=";
-
-  const [url, setUrl] = useState(`${FETCH_URL}${searchTerm}`);
-
   const handleFetchData = useCallback(async () => {
     dispatchStories({ type: "STORIES_INIT_STORIES" });
 
@@ -75,15 +56,6 @@ const Stories = () => {
 
   return (
     <div className={styles.innerContainer}>
-      <header className={styles.header}>
-        <h1 className={styles.headlineMain}>Hacker News Search</h1>
-        <SearchForm
-          handleSearch={handleSearch}
-          searchTerm={searchTerm}
-          searchSubmit={handleSearchSubmit}
-        />
-      </header>
-
       {stories.isError && <div>Error: Cannot get stories</div>}
 
       {stories.isLoading ? (
