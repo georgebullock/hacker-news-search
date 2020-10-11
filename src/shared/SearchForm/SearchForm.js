@@ -9,6 +9,7 @@ const SearchForm = ({ handleSearch, searchTerm, handleSearchSubmit }) => {
         name="search"
         id="search"
         handleSearch={handleSearch}
+        value={searchTerm}
       />
     </form>
   );
