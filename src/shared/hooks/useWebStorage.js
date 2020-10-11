@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 
 export const useWebStorage = (key, initialState) => {
   let [value, setValue] = useState(localStorage.getItem(key) || initialState);
