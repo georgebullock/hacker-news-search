@@ -5,7 +5,8 @@ import styles from "./List.module.scss";
 const iconStyles = { width: "1.2rem", height: "1.2rem" };
 
 const List = ({ list, onRemoveItem }) => {
-  const items = list.map((item) => {
+  console.log("list", list);
+  const items = list.hits.map((item) => {
     return <Item key={item.objectID} item={item} onRemoveItem={onRemoveItem} />;
   });
 
