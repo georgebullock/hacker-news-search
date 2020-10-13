@@ -17,8 +17,6 @@ const Stories = ({ stories }) => {
   /*************************/
   const handleRemoveStory = (id) => {};
 
-  console.log("stories: ", stories);
-
   return (
     <div className={styles.innerContainer}>
       <List list={stories} onRemoveItem={handleRemoveStory} />
