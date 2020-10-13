@@ -2,10 +2,6 @@ import React, { useCallback, useState } from "react";
 import { useFetchRequest } from "../hooks/useFetchRequest";
 
 // An HOC that returns a component based on a fetch request's response value
-
-// Not sure where the put this for now...
-// const url = "https://hn.algolia.com/api/v1/search?query=react";
-
 export const WithRequest = (mapDataFn) => {
   return function (Component) {
     return function ComponentLoader({ url }) {

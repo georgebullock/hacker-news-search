@@ -15,9 +15,7 @@ const Stories = ({ stories }) => {
   /***************************/
   /*      Remove Story      */
   /*************************/
-  const handleRemoveStory = (id) => {
-    // dispatchStories({ type: "STORIES_REMOVE_STORY", payload: id });
-  };
+  const handleRemoveStory = (id) => {};
 
   console.log("stories: ", stories);
 
