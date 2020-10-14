@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { WithRequest } from "../hocs/WithRequest";
 import List from "./../../shared/List/List";
 import styles from "./Stories.module.scss";
@@ -11,20 +11,20 @@ const getQualifyingHits = (data) => {
   };
 };
 
-const Stories = ({ stories }) => {
-  /***************************/
-  /*      Remove Story      */
-  /*************************/
-  const handleRemoveStory = (id) => {
-    stories.hits.filter((item) => {
-      console.log(id !== item.objectID);
-      return id !== item.objectID;
+const Stories = ({ stories, onRemoveItem }) => {
+  const [filteredStories, setFilteredStories] = useState(stories.hits);
+
+  const handleOnRemove = (id) => {
+    const newFilteredStories = filteredStories.filter((item) => {
+      return item.objectID !== id;
     });
+
+    setFilteredStories(newFilteredStories);
   };
 
   return (
     <div className={styles.innerContainer}>
-      <List list={stories} onRemoveItem={handleRemoveStory} />
+      <List list={filteredStories} onRemoveItem={handleOnRemove} />
     </div>
   );
 };
