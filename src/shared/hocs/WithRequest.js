@@ -26,9 +26,6 @@ export const WithRequest = (mapDataFn) => {
         onError,
       });
 
-      // TODO: Determine why this is called a total of 8x
-      console.log("responseState.data: ", responseState.data);
-
       return (
         <div className="loader">
           {(loadState === "loading" || loadState === "init") && (
