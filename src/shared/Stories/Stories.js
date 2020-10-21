@@ -18,28 +18,19 @@ const Stories = ({ url }) => {
     dispatchStories({ type: "STORIES_INIT_STORIES" });
 
     try {
-      const response = await fetch(url)
-        .then((res) => {
-          if (!res.ok) return console.error(res);
-          return res.json();
-        })
-        .then((res) => {
-          const filteredRes = res.hits.filter((item) => {
-            return item.url && item.title;
-          });
-
-          return {
-            hits: filteredRes,
-          };
-        });
+      const response = await fetch(url);
+      const data = await response.json();
+      const filteredRes = data.hits.filter((item) => {
+        return item.url && item.title;
+      });
 
       dispatchStories({
         type: "STORIES_FETCH_SUCCESS",
-        payload: response.hits,
+        payload: filteredRes,
       });
     } catch (error) {
       dispatchStories({ type: "STORIES_FETCH_FAILURE" });
-      console.error(error);
+      throw new Error(error.message);
     }
   }, [url]);
 
