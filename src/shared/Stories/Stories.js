@@ -1,6 +1,5 @@
 import React, { useEffect, useReducer, useCallback } from "react";
 import { storiesReducer } from "../Stories/storiesReducer";
-
 import List from "./../../shared/List/List";
 import styles from "./Stories.module.scss";
 
