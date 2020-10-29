@@ -10,7 +10,10 @@ export const useFetchRequest = ({ url, onLoad, onSuccess, onError }) => {
     try {
       const fetchData = async () => {
         const res = await fetch(url);
-        if (!res.ok) return;
+        if (!res.ok) {
+          onError();
+          throw new Error("Fetch request response was not okay");
+        }
 
         const data = await res.json();
         setData(data);
